@@ -25,7 +25,7 @@ const Login = () => {
                 signature: signature,
             };
             const response = await axios.post('http://localhost:5000/login',
-                { address: accounts[0] });
+                { address: accounts[0] , signature:signature});
             console.log(response)
             const user = response.data.record
             if (response.status == 200) {
@@ -37,6 +37,7 @@ const Login = () => {
                 console.log(response.data.message);
             }
         } catch (error) {
+            console.log("err")  
             console.error(error);
         }
     

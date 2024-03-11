@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     let navigate = useNavigate();
+    const [message, setMessage] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [userInfo, setUserInfo] = useState('');
@@ -27,12 +28,21 @@ const Signup = () => {
                 signature: signature,
             };
             const response = await axios.post('http://localhost:5000/register',
-                { firstname: firstName, lastname: lastName, address: accounts[0] });
+                { firstname: firstName, lastname: lastName, address: accounts[0], signature:signature });
             console.log(response)
             if (response.status == 201) {
                 const user = response.data.record
                 navigate('/login')
                 setUserInfo(`Welcome ${user.firstname} ${user.lastname}!`);
+            }
+            if (response.status == 200) {
+                const user = response.data.record
+                navigate('/login')
+                setUserInfo(`Welcome ${user.firstname} ${user.lastname}!`);
+            }
+            else{
+                setMessage(response.data.message);
+                console.log(response.data.message);
             }
         } catch (error) {
             console.error(error);
@@ -58,6 +68,7 @@ const Signup = () => {
             <br></br>
             <button onClick={(connectWallet)}>Connect Wallet</button>
             <div>{userInfo}</div>
+            {message && <div>{message}</div>}
         </div>
     );
 };
